@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>مذاكرة ومصالحة مع شوشو 📖💛</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --paper:#FBF3E6;
+    --paper-line:#E7D8BE;
+    --ink:#2B2440;
+    --plum:#5B3A5C;
+    --rose:#C9184A;
+    --gold:#C9932E;
+    --sage:#3E8E63;
+    --sage-bg:#E4F3E9;
+    --danger:#C9432E;
+    --danger-bg:#FBE7E2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Cairo',sans-serif;
+    color:var(--ink);
+    background:
+      repeating-linear-gradient(var(--paper) 0px, var(--paper) 37px, var(--paper-line) 38px),
+      var(--paper);
+    min-height:100vh;
+    padding:0 0 60px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px;}
+
+  /* margin rule like a notebook page */
+  .wrap::before{content:none;}
+
+  header.hero{
+    padding:52px 0 30px;
+    text-align:center;
+    position:relative;
+  }
+  .tag{
+    font-size:0.8rem;
+    color:var(--plum);
+    letter-spacing:0.5px;
+    margin-bottom:10px;
+  }
+  h1.title{
+    font-family:'Amiri',serif;
+    font-weight:700;
+    font-size:2.1rem;
+    line-height:1.5;
+    color:var(--rose);
+    margin:0 0 18px;
+  }
+  .hero p{
+    font-family:'Amiri',serif;
+    font-size:1.15rem;
+    line-height:2;
+    color:var(--ink);
+    max-width:520px;
+    margin:0 auto 14px;
+  }
+  .start-btn{
+    display:inline-block;
+    margin-top:22px;
+    background:var(--rose);
+    color:#fff;
+    border:none;
+    padding:14px 34px;
+    border-radius:30px;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:1.02rem;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(201,24,74,0.25);
+  }
+  .start-btn:active{transform:scale(0.97);}
+
+  section{display:none;}
+  section.active{display:block;}
+
+  /* rules card */
+  .rules-card{
+    background:#fff;
+    border:1.5px solid var(--paper-line);
+    border-radius:16px;
+    padding:26px 22px;
+    margin:20px 0 30px;
+    box-shadow:0 10px 24px rgba(43,36,64,0.06);
+  }
+  .rules-card h2{
+    font-size:1.15rem;
+    margin:0 0 14px;
+    color:var(--plum);
+  }
+  .rules-card ul{margin:0;padding-right:20px;line-height:2;font-size:0.95rem;}
+  .unit-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .unit-chip{
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:0.78rem;
+    color:var(--plum);
+    font-weight:600;
+  }
+
+  /* progress */
+  .progress-track{
+    background:#EFE3CE;
+    height:8px;
+    border-radius:6px;
+    overflow:hidden;
+    margin:18px 0 6px;
+  }
+  .progress-fill{
+    background:linear-gradient(90deg,var(--rose),var(--gold));
+    height:100%;
+    width:0%;
+    transition:width 0.4s ease;
+  }
+  .progress-label{
+    font-size:0.78rem;
+    color:var(--plum);
+    display:flex;
+    justify-content:space-between;
+  }
+  .love-meter-wrap{margin:10px 0 4px;}
+  .love-meter-track{
+    background:#F6E3E9;
+    height:10px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .love-meter-fill{
+    background:linear-gradient(90deg,var(--gold),var(--rose));
+    height:100%;
+    width:0%;
+    transition:width 0.6s ease;
+  }
+  .love-meter-label{
+    font-size:0.74rem;
+    color:var(--rose);
+    margin-top:4px;
+    text-align:center;
+    font-weight:700;
+  }
+  .unit-label{
+    display:inline-block;
+    background:var(--plum);
+    color:#fff;
+    font-size:0.72rem;
+    padding:4px 12px;
+    border-radius:14px;
+    margin-bottom:14px;
+  }
+
+  .q-card{
+    background:#fff;
+    border:1.5px solid var(--paper-line);
+    border-radius:16px;
+    padding:24px 22px;
+    box-shadow:0 10px 24px rgba(43,36,64,0.06);
+    position:relative;
+    animation:cardPop 0.4s ease;
+  }
+  .q-card::before{
+    content:'💛';
+    position:absolute;
+    top:-14px;
+    left:18px;
+    font-size:1.5rem;
+    transform:rotate(-12deg);
+  }
+  @keyframes cardPop{
+    from{ transform:scale(0.94) rotate(-1deg); opacity:0; }
+    to{ transform:scale(1) rotate(0); opacity:1; }
+  }
+  .q-text{
+    font-family:'Amiri',serif;
+    font-size:1.25rem;
+    line-height:1.9;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  .opt-btn{
+    display:block;
+    width:100%;
+    text-align:right;
+    background:var(--paper);
+    border:1.5px solid var(--paper-line);
+    border-radius:12px;
+    padding:13px 16px;
+    margin-bottom:10px;
+    font-family:'Cairo',sans-serif;
+    font-size:0.95rem;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .opt-btn:hover{border-color:var(--gold);}
+  .opt-btn.correct{background:var(--sage-bg);border-color:var(--sage);color:var(--sage);font-weight:700;}
+  .opt-btn.wrong{background:var(--danger-bg);border-color:var(--danger);color:var(--danger);font-weight:700;}
+  .opt-btn.disabled{pointer-events:none;opacity:0.65;}
+  .opt-btn.disabled.correct,.opt-btn.disabled.wrong{opacity:1;}
+
+  .feedback-line{
+    font-size:0.85rem;
+    margin-top:10px;
+    color:var(--plum);
+    min-height:20px;
+    line-height:1.7;
+  }
+  .next-btn{
+    display:none;
+    margin-top:16px;
+    background:var(--plum);
+    color:#fff;
+    border:none;
+    padding:11px 26px;
+    border-radius:24px;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:0.92rem;
+    cursor:pointer;
+  }
+
+  /* results */
+  .result-card{
+    background:#fff;
+    border:1.5px solid var(--paper-line);
+    border-radius:18px;
+    padding:34px 26px;
+    text-align:center;
+    box-shadow:0 12px 28px rgba(43,36,64,0.08);
+  }
+  .result-score{
+    font-family:'Amiri',serif;
+    font-size:2.6rem;
+    color:var(--rose);
+    font-weight:700;
+    margin:6px 0 4px;
+  }
+  .result-title{font-size:1.1rem;font-weight:700;color:var(--plum);margin-bottom:8px;}
+  .result-msg{font-family:'Amiri',serif;font-size:1.08rem;line-height:1.9;margin:14px 0 22px;color:var(--ink);}
+
+  /* certificate */
+  #certificate{
+    background:#FFFDF8;
+    border:6px double var(--gold);
+    border-radius:10px;
+    padding:34px 24px;
+    margin:24px 0;
+    text-align:center;
+  }
+  #certificate .cert-eyebrow{font-size:0.8rem;color:var(--plum);letter-spacing:1px;}
+  #certificate h3{
+    font-family:'Amiri',serif;
+    font-size:1.6rem;
+    color:var(--rose);
+    margin:10px 0;
+  }
+  #certificate .cert-name{
+    font-family:'Amiri',serif;
+    font-size:1.9rem;
+    color:var(--ink);
+    margin:14px 0;
+    font-weight:700;
+  }
+  #certificate p{font-family:'Amiri',serif;font-size:1.02rem;line-height:1.9;color:var(--ink);margin:0 0 14px;}
+  #certificate .cert-seal{font-size:2rem;margin-top:10px;}
+
+  .dl-btn{
+    background:var(--gold);
+    color:#fff;
+    border:none;
+    padding:12px 28px;
+    border-radius:24px;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:0.92rem;
+    cursor:pointer;
+    margin-top:6px;
+  }
+
+  .reset-line{
+    text-align:center;
+    margin-top:20px;
+    font-size:0.82rem;
+    color:var(--plum);
+  }
+  .reset-line a{color:var(--rose);text-decoration:underline;cursor:pointer;}
+
+  footer{
+    text-align:center;
+    font-size:0.78rem;
+    color:#9A8B72;
+    margin-top:40px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="tag">من قلبي... حب وصداقة وكل حاجة حلوة 💛</div>
+    <h1 class="title">لشوشو، أحلى صديقة وأغلى حد عندي 🎀</h1>
+    <p>مش عايز بس أقولك آسف وخلاص. عايزين نضحك مع بعض شوية. جهزتلك مراجعة صغيرة وظريفة على قصة "الأيام"، كل سؤال فيها هيضحكك أو يبسطك، ووعدتك في الآخر في مفاجأة تليق بيكي.</p>
+    <button class="start-btn" onclick="goTo('rules')">يلا بينا نضحك ونذاكر 🎉📚</button>
+  </header>
+
+  <section id="rules" class="rules-section">
+    <div class="rules-card">
+      <h2>قبل ما نبدأ</h2>
+      <ul>
+        <li>12 سؤال، كل سؤال 4 اختيارات.</li>
+        <li>اختاري إجابة، وهقولك على طول صح ولا غلط.</li>
+        <li>مفيش وقت ضاغط عليكي، خدي وقتك وريحي بالك.</li>
+        <li>في الآخر هتلاقي نتيجتك... ومفاجأة تخصك انتي 🎁</li>
+      </ul>
+      <div class="unit-chips">
+        <span class="unit-chip">الفصل الأول: الطفولة والعمى</span>
+        <span class="unit-chip">الفصل الثاني: الكُتّاب وحفظ القرآن</span>
+        <span class="unit-chip">الفصل الثالث: مشاهد من طفولته</span>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <button class="start-btn" onclick="startQuiz()">ابدأ الاختبار ✍️</button>
+    </div>
+  </section>
+
+  <section id="quiz" class="quiz-section">
+    <div class="progress-label">
+      <span id="progressText">سؤال 1 من 12</span>
+      <span id="scoreText">نقاطك: 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="love-meter-wrap">
+      <div class="love-meter-track"><div class="love-meter-fill" id="loveFill"></div></div>
+      <div class="love-meter-label" id="loveLabel">حبي ليكي بيكبر: 0% 💛</div>
+    </div>
+    <div style="margin-top:16px;">
+      <span class="unit-label" id="unitLabel">الفصل الأول: الطفولة والعمى</span>
+      <div class="q-card">
+        <p class="q-text" id="qText"></p>
+        <div id="optsWrap"></div>
+        <div class="feedback-line" id="feedbackLine"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">التالي ⬅️</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="result" class="result-section">
+    <div class="result-card">
+      <div class="result-title">خلصتي المراجعة يا شوشو 🎓</div>
+      <div class="result-score" id="finalScore">0 / 12</div>
+      <p class="result-msg" id="resultMsg"></p>
+    </div>
+
+    <div id="certificate">
+      <div class="cert-eyebrow">شهادة تفوّق ومصالحة</div>
+      <h3>مذاكرة مع بعض... ومسامحة مع بعض</h3>
+      <div class="cert-name">شوشو 💛</div>
+      <p id="certBody">ذاكرتي، جاوبتي، وضحكتينا مع بعض على أول 3 فصول من قصة "الأيام". ودلوقتي رسميًا: سامحتيني، وأنا فخور بيكي.</p>
+      <div class="cert-seal">🏅🌷</div>
+    </div>
+    <div style="text-align:center;">
+      <button class="dl-btn" onclick="downloadCert()">نزّلي الشهادة 📥</button>
+    </div>
+
+    <div class="reset-line">حابة تحلي الاختبار تاني؟ <a onclick="restartQuiz()">من الأول</a></div>
+  </section>
+
+  <footer>بكل حب... ليكي انتي بس 💛</footer>
+</div>
+
+<script>
+  const questions = [
+    // الفصل الأول: الطفولة والعمى
+    {unit:'الفصل الأول: الطفولة والعمى', q:'قصة "الأيام" من تأليف؟', opts:['نجيب محفوظ','طه حسين','توفيق الحكيم','عباس العقاد'], correct:1},
+    {unit:'الفصل الأول: الطفولة والعمى', q:'"الأيام" تُصنَّف أدبيًا على أنها؟', opts:['رواية بوليسية','ديوان شعر','سيرة ذاتية','مسرحية'], correct:2},
+    {unit:'الفصل الأول: الطفولة والعمى', q:'الجزء الأول من "الأيام" يحكي بشكل أساسي عن؟', opts:['طفولة طه حسين في الريف المصري','رحلته إلى فرنسا','حياته في الجامعة','عمله وزيرًا للمعارف'], correct:0},
+    {unit:'الفصل الأول: الطفولة والعمى', q:'بطل القصة (طه حسين) كان يعاني منذ صغره من؟', opts:['فقدان السمع','فقدان البصر','مرض في القلب','صعوبة في الكلام'], correct:1},
+    // الفصل الثاني: الكُتّاب وحفظ القرآن
+    {unit:'الفصل الثاني: الكُتّاب وحفظ القرآن', q:'كان الصبي يذهب إلى "الكُتّاب" ليحفظ؟', opts:['الشعر الجاهلي','القرآن الكريم','قواعد النحو','الحساب'], correct:1},
+    {unit:'الفصل الثاني: الكُتّاب وحفظ القرآن', q:'كان أهل القرية يلقّبون شيخ الكُتّاب باسم؟', opts:['سيدنا','أستاذنا','معلمنا','شيخنا الجليل'], correct:0},
+    {unit:'الفصل الثاني: الكُتّاب وحفظ القرآن', q:'حفظ الصبي القرآن كاملًا في الكُتّاب قبل أن يبلغ؟', opts:['السابعة من عمره','التاسعة من عمره','الحادية عشرة من عمره','الثالثة عشرة من عمره'], correct:1},
+    {unit:'الفصل الثاني: الكُتّاب وحفظ القرآن', q:'لما طلب أبوه منه القراءة أمام صديقين، فوجئ الأب بأن ابنه؟', opts:['قرأ بطلاقة شديدة','عجز عن القراءة لأنه نسي ما حفظ','رفض القراءة غضبًا','قرأ سورة أخرى غير المطلوبة'], correct:1},
+    // الفصل الثالث: مشاهد من طفولته
+    {unit:'الفصل الثالث: مشاهد من طفولته', q:'كان الصبي يحب الجلوس عند السياج في المساء ليستمع إلى؟', opts:['حكايات جدته','شاعر يُنشد أشعاره','أصوات الطيور فقط','قراءة أخيه الكبير'], correct:1},
+    {unit:'الفصل الثالث: مشاهد من طفولته', q:'من كانت تقطع عليه جلسته عند السياج وتأخذه إلى داخل البيت؟', opts:['أمه','جدته','أخته','خادمة الدار'], correct:2},
+    {unit:'الفصل الثالث: مشاهد من طفولته', q:'كانت تخوّفه ليلًا بالحديث عن؟', opts:['اللصوص','الأشباح والعفاريت','الوحوش المفترسة','الجن الأزرق فقط'], correct:1},
+    {unit:'الفصل الثالث: مشاهد من طفولته', q:'كانت أمه تُقطّر له في عينيه؟', opts:['عسلًا','سائلًا لعلاج عينيه','ماء الورد','زيتًا للشعر'], correct:1},
+  ];
+
+  let current = 0;
+  let score = 0;
+  let answered = false;
+
+  function goTo(id){
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function startQuiz(){
+    current = 0; score = 0;
+    const fill = document.getElementById('loveFill');
+    const label = document.getElementById('loveLabel');
+    if (fill) fill.style.width = '0%';
+    if (label) label.textContent = 'حبي ليكي بيكبر: 0% 💛';
+    goTo('quiz');
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    answered = false;
+    const item = questions[current];
+    document.getElementById('unitLabel').textContent = item.unit;
+    document.getElementById('progressText').textContent = `سؤال ${current+1} من ${questions.length}`;
+    document.getElementById('scoreText').textContent = `نقاطك: ${score}`;
+    document.getElementById('progressFill').style.width = ((current)/questions.length*100) + '%';
+    document.getElementById('qText').textContent = item.q;
+    document.getElementById('feedbackLine').textContent = '';
+    document.getElementById('nextBtn').style.display = 'none';
+
+    const card = document.querySelector('.q-card');
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = '';
+
+    const wrap = document.getElementById('optsWrap');
+    wrap.innerHTML = '';
+    item.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => selectAnswer(i, btn));
+      wrap.appendChild(btn);
+    });
+  }
+
+  const correctReactions = [
+    'برافو يا قمر! 🎉 كده يا شوشو',
+    'إجابة صح 😍 دماغك فُلّة',
+    'يااااه عبقرية! 🥹💛',
+    'ولا كلمة زيادة! صح تمام 🎯',
+    'حلوة أوي كده 😂❤️ كمّلي',
+    'ذكية زيي بالظبط 😏💫'
+  ];
+  const wrongReactions = [
+    'هههه قريبة بس مش هي 😂 الصح كان: ',
+    'لأ يا حبيبتي، بس ولا يهمك 🙈 الصح: ',
+    'خطأ ظريف جدًا 😄 الصح كان: ',
+    'معلش، حتى وانتي غلطانة حلوة 😌 الصح: ',
+    'أووه مش كده 😅 الصح كان: '
+  ];
+
+  function floatEmojis(anchorBtn){
+    const emojis = ['💛','✨','😂','🎉','💫'];
+    const rect = anchorBtn.getBoundingClientRect();
+    for (let k = 0; k < 5; k++){
+      const span = document.createElement('span');
+      span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      span.style.position = 'fixed';
+      span.style.left = (rect.left + Math.random()*rect.width) + 'px';
+      span.style.top = rect.top + 'px';
+      span.style.fontSize = (1.1 + Math.random()*0.8) + 'rem';
+      span.style.pointerEvents = 'none';
+      span.style.zIndex = 999;
+      span.style.transition = 'transform 0.9s ease, opacity 0.9s ease';
+      document.body.appendChild(span);
+      requestAnimationFrame(() => {
+        span.style.transform = `translateY(-${60 + Math.random()*40}px)`;
+        span.style.opacity = '0';
+      });
+      setTimeout(() => span.remove(), 950);
+    }
+  }
+
+  function selectAnswer(i, btn){
+    if (answered) return;
+    answered = true;
+    const item = questions[current];
+    const allBtns = document.querySelectorAll('.opt-btn');
+    allBtns.forEach(b => b.classList.add('disabled'));
+
+    if (i === item.correct){
+      btn.classList.add('correct');
+      score++;
+      document.getElementById('feedbackLine').textContent = correctReactions[Math.floor(Math.random()*correctReactions.length)];
+    } else {
+      btn.classList.add('wrong');
+      allBtns[item.correct].classList.add('correct');
+      const line = wrongReactions[Math.floor(Math.random()*wrongReactions.length)];
+      document.getElementById('feedbackLine').textContent = line + item.opts[item.correct];
+    }
+    // حاجة حلوة بتحصل بعد كل سؤال، صح أو غلط، عشان تفضل مبسوطة
+    floatEmojis(btn);
+    if (typeof confetti === 'function'){
+      confetti({particleCount:24, spread:55, startVelocity:20, origin:{y:0.65}});
+    }
+    growLoveMeter();
+
+    document.getElementById('scoreText').textContent = `نقاطك: ${score}`;
+    document.getElementById('nextBtn').style.display = 'inline-block';
+    document.getElementById('nextBtn').textContent = (current === questions.length - 1) ? 'شوفي النتيجة 🎁' : 'التالي ⬅️';
+  }
+
+  function growLoveMeter(){
+    const pct = Math.round(((current + 1) / questions.length) * 100);
+    const fill = document.getElementById('loveFill');
+    const label = document.getElementById('loveLabel');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.textContent = 'حبي ليكي بيكبر: ' + pct + '% 💛';
+  }
+
+  function nextQuestion(){
+    current++;
+    if (current >= questions.length){
+      showResult();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showResult(){
+    document.getElementById('progressFill').style.width = '100%';
+    goTo('result');
+    document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
+
+    let msg, certLine;
+    if (score >= 10){
+      msg = 'وحشة يا شوشو 🌟 ده مستوى فعلاً مبهر، ومذاكرتك ولا أحلى. وأنا كمان مبسوط إننا ذاكرنا وضحكنا مع بعض في نفس الوقت.';
+      certLine = 'حصلت على ' + score + ' من ' + questions.length + ' بتفوق. ودلوقتي رسميًا: سامحتيني، وأنا فخور بيكي جدًا.';
+      if (typeof confetti === 'function'){ confetti({particleCount:160, spread:100, origin:{y:0.6}}); }
+    } else if (score >= 7){
+      msg = 'كويسة جدًا يا شوشو 😊 فاهمة المنهج فعلًا، وشوية مراجعة كمان وهتبقي جاهزة تمامًا.';
+      certLine = 'حصلت على ' + score + ' من ' + questions.length + '. مجهود حلو، ودلوقتي: سامحتيني، وهقعد أذاكر معاكي كل مرة.';
+      if (typeof confetti === 'function'){ confetti({particleCount:110, spread:90, origin:{y:0.6}}); }
+    } else {
+      msg = 'مش مهم النتيجة دلوقتي يا شوشو، المهم إننا قعدنا مع بعض. تحبي نراجع الأسئلة اللي غلطنا فيها تاني مع بعض بعدين؟';
+      certLine = 'حاولتي وذاكرتي معايا، وده يكفي. سامحتيني، وهفضل جنبك في كل مذاكرة جاية.';
+      if (typeof confetti === 'function'){ confetti({particleCount:90, spread:80, origin:{y:0.6}}); }
+    }
+    document.getElementById('resultMsg').textContent = msg;
+    document.getElementById('certBody').textContent = certLine;
+  }
+
+  function restartQuiz(){
+    startQuiz();
+  }
+
+  function downloadCert(){
+    const el = document.getElementById('certificate');
+    html2canvas(el, {backgroundColor:'#FFFDF8', scale:2}).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'شهادة-شوشو.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+</script>
+</body>
+</html>
